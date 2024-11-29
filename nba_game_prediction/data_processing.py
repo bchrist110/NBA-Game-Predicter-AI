@@ -79,8 +79,8 @@ def create_features_labels(data: pd.DataFrame) -> tuple:
     away_data = data.copy()
 
     # Rename columns for home and away teams
-    feature_cols_home = ['PTS_rolling_avg', 'REB_rolling_avg', 'AST_rolling_avg', 'WIN']
-    feature_cols_away = ['PTS_rolling_avg', 'REB_rolling_avg', 'AST_rolling_avg']
+    feature_cols_home = ['PTS_rolling_avg', 'REB_rolling_avg', 'AST_rolling_avg', 'WIN', 'FGM_rolling_avg','FGA_rolling_avg','FG_PCT_rolling_avg','FG3M_rolling_avg','FG3A_rolling_avg','FG3_PCT_rolling_avg','FTM_rolling_avg','FTA_rolling_avg','FT_PCT_rolling_avg','OREB_rolling_avg','DREB_rolling_avg','STL_rolling_avg','BLK_rolling_avg','TOV_rolling_avg','PF_rolling_avg' ]
+    feature_cols_away = ['PTS_rolling_avg', 'REB_rolling_avg', 'AST_rolling_avg', 'FGM_rolling_avg','FGA_rolling_avg','FG_PCT_rolling_avg','FG3M_rolling_avg','FG3A_rolling_avg','FG3_PCT_rolling_avg','FTM_rolling_avg','FTA_rolling_avg','FT_PCT_rolling_avg','OREB_rolling_avg','DREB_rolling_avg','STL_rolling_avg','BLK_rolling_avg','TOV_rolling_avg','PF_rolling_avg' ]
 
     home_data = home_data.rename(columns={col: f"{col}_home" for col in feature_cols_home})
     away_data = away_data.rename(columns={col: f"{col}_away" for col in feature_cols_away})
@@ -94,8 +94,42 @@ def create_features_labels(data: pd.DataFrame) -> tuple:
 
     # Features: Rolling averages for home and away teams
     feature_cols = [
-        'PTS_rolling_avg_home', 'REB_rolling_avg_home', 'AST_rolling_avg_home',
-        'PTS_rolling_avg_away', 'REB_rolling_avg_away', 'AST_rolling_avg_away'
+        'PTS_rolling_avg_home', 
+        'REB_rolling_avg_home',
+        'AST_rolling_avg_home',
+        'PTS_rolling_avg_away',
+        'REB_rolling_avg_away',
+        'AST_rolling_avg_away',
+        'FGM_rolling_avg_home',
+        'FGA_rolling_avg_home',
+        'FG_PCT_rolling_avg_home',
+        'FG3M_rolling_avg_home',
+        'FG3A_rolling_avg_home',
+        'FG3_PCT_rolling_avg_home',
+        'FTM_rolling_avg_home',
+        'FTA_rolling_avg_home',
+        'FT_PCT_rolling_avg_home',
+        'OREB_rolling_avg_home',
+        'DREB_rolling_avg_home',
+        'STL_rolling_avg_home',
+        'BLK_rolling_avg_home',
+        'TOV_rolling_avg_home',
+        'PF_rolling_avg_home',
+        'FGM_rolling_avg_away',
+        'FGA_rolling_avg_away',
+        'FG_PCT_rolling_avg_away',
+        'FG3M_rolling_avg_away',
+        'FG3A_rolling_avg_away',
+        'FG3_PCT_rolling_avg_away',
+        'FTM_rolling_avg_away',
+        'FTA_rolling_avg_away',
+        'FT_PCT_rolling_avg_away',
+        'OREB_rolling_avg_away',
+        'DREB_rolling_avg_away',
+        'STL_rolling_avg_away',
+        'BLK_rolling_avg_away',
+        'TOV_rolling_avg_away',
+        'PF_rolling_avg_away'
     ]
     X = combined_data[feature_cols]
 
@@ -144,7 +178,7 @@ if __name__ == "__main__":
     processed_data = calculate_rolling_average(
         processed_data,
         team_col='TEAM_NAME',
-        stat_cols=['PTS', 'REB', 'AST']
+        stat_cols=['PTS', 'REB', 'AST','FGM','FGA','FG_PCT','FG3M','FG3A','FG3_PCT','FTM','FTA','FT_PCT','OREB','DREB','STL','BLK','TOV','PF']
     )
     
     # Step 4: Save to CSV

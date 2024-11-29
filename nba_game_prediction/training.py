@@ -13,14 +13,6 @@ from data_processing import load_data_from_csv, create_features_labels
 def train_model(model, train_loader, criterion, optimizer, epochs=50, device='cpu'):
     """
     Train the neural network model.
-    
-    :param model: The PyTorch model to train.
-    :param train_loader: DataLoader for the training dataset.
-    :param criterion: Loss function.
-    :param optimizer: Optimizer for gradient descent.
-    :param epochs: Number of epochs to train.
-    :param device: Device to train on ('cpu' or 'cuda').
-    :return: Trained model.
     """
     print(f"Starting training for {epochs} epochs on {device}...")
     model.to(device)
@@ -69,6 +61,9 @@ def main():
     print("Splitting data into training and validation sets...")
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
 
+    joblib.dump(list(X.columns), './models/feature_names.pkl')  # Save feature names
+    print("Feature names saved to './models/feature_names.pkl'")
+
     # Normalize the features
     print("Normalizing the features...")
     scaler = StandardScaler()
@@ -77,7 +72,7 @@ def main():
 
     # Save the scaler for future predictions
     joblib.dump(scaler, './models/scaler.pkl')
-    print("Scaler saved to './models/scaler.pkl'")
+    print("Scaler and feature names saved.")
 
     # Convert data to PyTorch tensors
     X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
@@ -90,7 +85,8 @@ def main():
     train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 
     # Initialize the model
-    input_size = 6  # 3 stats for home + 3 stats for away
+    input_size = X_train.shape[1]  # Dynamically adjust input size based on features
+    print(f"Input size for the model: {input_size}")
     model = NBAWinnerPredictor(input_size)
 
     # Define loss function and optimizer
